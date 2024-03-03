@@ -26,7 +26,8 @@ route.get("/googlePermissions", passport.authenticate("google", {
     scope: ['profile','email','https://www.googleapis.com/auth/drive']
 }))
 route.get("/google", passport.authenticate("google"), (req, res) => {
-    res.status(200).json({ id: req.id });
+    const { id, googleID, userName, email, type,parentId,token } = req.user;
+    res.status(200).json({id,googleID,userName,email,type,parentId,token});
 })
 
 export default route;
