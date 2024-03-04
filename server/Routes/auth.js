@@ -26,7 +26,7 @@ route.use(passport.initialize())
 route.use(cors())
 
 route.get("/googlePermissions", passport.authenticate("google", {
-    scope: ['profile','email','https://www.googleapis.com/auth/drive']
+    scope: ['profile','email','http s://www.googleapis.com/auth/drive']
 }))
 route.get("/google", passport.authenticate("google"), (req, res) => {
     const { id } = req.user;

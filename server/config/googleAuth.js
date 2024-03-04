@@ -37,7 +37,7 @@ const init = () => {
             let contents = await axios.get(`https://www.googleapis.com/drive/v2/files/${check.files[0].id}?alt=media`, { headers: { Authorization: `Bearer ${accessToken}` } })
             contents = await contents.data
             // console.log(contents)
-            done(null, {...contents,id:check.files[0].id})
+            done(null, { ...contents, id: check.files[0].id })
         }
         else {
             let response = await axios.post(`https://www.googleapis.com/drive/v3/files`, { name: 'games', mimeType: 'application/vnd.google-apps.folder' }, { headers: { Authorization: `Bearer ${accessToken}` } })
