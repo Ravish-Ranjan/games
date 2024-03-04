@@ -3,6 +3,8 @@ import passport from "passport";
 import init from "../config/googleAuth.js";
 import session from "express-session";
 import dotenv from "dotenv";
+import cors from "cors"
+import jwt from "jsonwebtoken"
 
 
 const route = express.Router();
@@ -21,13 +23,20 @@ route.use(session({
 init();
 route.use(passport.session())
 route.use(passport.initialize())
+route.use(cors())
 
 route.get("/googlePermissions", passport.authenticate("google", {
     scope: ['profile','email','https://www.googleapis.com/auth/drive']
 }))
 route.get("/google", passport.authenticate("google"), (req, res) => {
-    const { id, googleID, userName, email, type,parentId,token } = req.user;
-    res.status(200).json({id,googleID,userName,email,type,parentId,token});
+    const { id } = req.user;
+    let newId = jwt.sign(id, process.env.SIGN)
+    console.log(id)
+    res.redirect(`http://localhost:3000?token=${newId}`)
 })
-
+route.get("/data/:id", (req, res) => {
+    const { id } = req.params;
+    console.log(id)
+    res.status(200).json(req.session.info);
+})
 export default route;
