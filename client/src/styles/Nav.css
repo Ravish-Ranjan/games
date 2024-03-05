@@ -1,0 +1,13 @@
+nav {
+	height: 10vh;
+	display: flex;
+}
+/* 43*45 */
+nav > div {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+div>img{
+	max-height: 90%;
+}
