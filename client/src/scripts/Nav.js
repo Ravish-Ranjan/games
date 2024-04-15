@@ -1,5 +1,5 @@
-import logo from "../assets/logo large.png";
 import "../styles/Nav.scss";
+import logo from "../assets/logo (1).svg";
 import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
@@ -19,8 +19,9 @@ export function Nav() {
 	return (
 		<nav>
 			<div id="brand">
-				<img src={logo} alt=""></img>
-				<span>SOCK8's</span>
+				<span>S
+				<img src={logo} alt="o"></img>	
+				ck8's</span>
 			</div>
 			<div id="nav-control">
 				<ThemeProvider theme={darkTheme}>

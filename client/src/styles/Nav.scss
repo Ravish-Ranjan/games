@@ -1,11 +1,19 @@
+@font-face {
+	font-family: gb-robo;
+	src: url("../assets/fonts/Oswald-VariableFont_wght.ttf");
+}
+
 $col1: hsl(54, 51%, 71%);
 $col2: hsl(300, 35%, 35%);
+
 nav {
 	height: 10vh;
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	padding-inline: 1rem;
+	background-color: transparent;
 	/* 43*45 */
 	#brand {
 		display: flex;
@@ -13,32 +21,23 @@ nav {
 		align-items: center;
 		height: 100%;
 		width: 15%;
-		position: relative;
-		img {
-			height: 100%;
-			filter: drop-shadow(0 0 4px hsl(54, 51%, 71%));
-			transform: rotateY(180deg) translateX(60%);
-			z-index: 1;
-		}
 		span {
 			color: white;
 			font-size: 3rem;
-			font-family: "Pixelify Sans", sans-serif;
-			font-optical-sizing: auto;
-			font-weight: 400;
+			font-family: gb-robo, sans-serif;
+			font-weight: 600;
 			font-style: normal;
-			position: absolute;
-			background: linear-gradient(
-				-90deg,
-				$col2 20%,
-				$col1 40%,
-				#3a3a3a 70%,
-				$col1 85%,
-				$col2 98%
-			);
+			background: #7a35cf;
+			background: linear-gradient(to right, #7a35cf 0%, #dbd38f 100%);
 			background-clip: text;
 			-webkit-text-fill-color: transparent;
-			z-index: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			img{
+				width: 3rem;
+				transform: translateY(25%);
+			}
 		}
 	}
 	#nav-control {
@@ -51,7 +50,6 @@ nav {
 		}
 		.avatar {
 			font-size: 1.5rem;
-
 		}
 	}
 }

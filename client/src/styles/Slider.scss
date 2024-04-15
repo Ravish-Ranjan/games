@@ -1,0 +1,21 @@
+.card {
+	aspect-ratio: 3/4;
+	height: 100%;
+	display: grid;
+	place-items: center;
+	padding: 0.5rem;
+	color: white;
+	border-radius: 0.5rem;
+	background-color: #ffffff88;
+}
+.slider {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	outline: 2px solid limegreen;
+	width: 100%;
+	height: 40vh;
+	padding: 1rem;
+	gap: 0.5rem;
+	overflow-x: auto;
+}
