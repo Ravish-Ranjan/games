@@ -4,7 +4,8 @@
 }
 
 $col1: hsl(54, 51%, 71%);
-$col2: hsl(300, 35%, 35%);
+$col2: hsl(300, 57%, 43%);
+$col3: hsl(273, 52%, 56%);
 
 nav {
 	height: 10vh;
@@ -24,19 +25,29 @@ nav {
 		span {
 			color: white;
 			font-size: 3rem;
+			// letter-spacing: .2rem;
 			font-family: gb-robo, sans-serif;
-			font-weight: 600;
+			font-weight: 500;
 			font-style: normal;
-			background: #7a35cf;
-			background: linear-gradient(to right, #7a35cf 0%, #dbd38f 100%);
+			color: transparent;
+			background-color: $col2;
 			background-clip: text;
-			-webkit-text-fill-color: transparent;
+			background: linear-gradient();
+			$amt: 0.1rem;
+			$namt: calc($amt * -1);
+			$shadow: 2.5rem;
+			animation: glow 5s linear infinite;
+			text-shadow: $amt $amt $shadow $col3,
+				$namt $amt $shadow $col3,
+				$amt $namt $shadow $col3,
+				$namt $namt $shadow $col3;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			img{
+			img {
 				width: 3rem;
 				transform: translateY(25%);
+				mix-blend-mode: color-dodge;
 			}
 		}
 	}
@@ -57,4 +68,24 @@ nav {
 	font-optical-sizing: auto;
 	font-weight: 400;
 	font-style: normal;
+}
+@keyframes glow{
+	0%,100%{
+		text-shadow: .1rem .1rem 2.5rem $col3,
+				-0.1rem .1rem 2.5rem $col3,
+				.1rem -0.1rem 2.5rem $col3,
+				-0.1rem -0.1rem 2.5rem $col3;
+	}
+	30%,70%{
+		text-shadow: .1rem .1rem 5rem $col3,
+				-0.1rem .1rem 5rem $col3,
+				.1rem -0.1rem 5rem $col3,
+				-0.1rem -0.1rem 5rem $col3;
+	}
+	50%{
+		text-shadow: .1rem .1rem 3rem $col3,
+				-0.1rem .1rem 3rem $col3,
+				.1rem -0.1rem 3rem $col3,
+				-0.1rem -0.1rem 3rem $col3;
+	}
 }
