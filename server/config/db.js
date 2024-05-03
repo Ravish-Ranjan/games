@@ -1,8 +1,10 @@
 import {MongoClient} from 'mongodb'
+import dotenv from 'dotenv'
 
+dotenv.config()
 let db;
 const connectToDb = (cb) => {
-    MongoClient.connect("mongodb+srv://nimcetafh:kxRWF6FphzrFPyIu@socetcluster.bpfi33m.mongodb.net/Game").then(client => {
+    MongoClient.connect(process.env.DB).then(client => {
         db = client.db();
         return cb();
     }).catch(err => {
