@@ -1,6 +1,6 @@
 import "../styles/Nav.scss";
 import logo from "../assets/logo (1).svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
@@ -13,9 +13,15 @@ const darkTheme = createTheme({
 		mode: "dark",
 	},
 });
-
 export function Nav() {
+	const [userName, setUsername] = useState("Game User");
+	const [profilePic,setProfilePic] = useState('')
 	const [SearchQuery, setSearchQuery] = useState("");
+	useEffect( () => {
+		const params = new URLSearchParams(window.location.search)
+		setUsername(params.get('user'))
+		setProfilePic(params.get('dp'))
+	},[])
 	return (
 		<nav>
 			<div id="brand">
@@ -41,7 +47,7 @@ export function Nav() {
 						<SearchIcon style={{ fill: "hsl(300, 40%, 8	0%)" }} />
 					</IconButton>
 				</ThemeProvider>
-				<Avatar sx={{ bgcolor: deepPurple[400] }} alt="Ravish Ranjan" className="avatar pixel-font">Rr</Avatar>
+				<Avatar sx={{ bgcolor: deepPurple[400] }} src={profilePic} alt="Ravish Ranjan" className="avatar pixel-font">{userName ? userName.slice(0,2) : 'GU'}</Avatar>
 			</div>
 		</nav>
 	);

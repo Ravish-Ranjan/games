@@ -1,19 +1,22 @@
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth2";
 import dotenv from "dotenv";
-import { v4 } from "uuid";
-import axios from "axios"
+import {connectToDb,getDb} from "../config/db.js"
+
 
 dotenv.config()
 
-const init = () => {
+const init = async () => {
     passport.serializeUser((user, done) => {
-        done(null, { id: user.id, token: user.token })
+        done(null, user._id)
     });
-    passport.deserializeUser(async (info, done) => {
-        let response = await axios.get(`https://www.googleapis.com/drive/v2/files/${info.id}?alt=media`, { headers: { Authorization: `Bearer ${info.token}` } })
-        response = await response.data
-        done(null, response)
+    passport.deserializeUser( id => {
+        db.collection("UserData").findOne({ _id: id }).then(result => {
+            if (result)
+                done(null, result)
+            else
+                done('user not found')
+        })
     })
     passport.use(new GoogleStrategy({
         clientID: process.env.CLIENT_ID,
@@ -21,45 +24,37 @@ const init = () => {
         callbackURL: process.env.REDIRECT_URI
     }, async (accessToken, refreshToken, profile, done) => {
         const user = {
-            _id: v4(),
             googleID: profile.id,
             userName: profile.displayName,
             email: profile.email,
-            profilePic: profile.photos.value,
+            profilePic: profile.photos[0].value,
             type: 'google',
             refreshToken
         }
-
-        //create folder
-        let check = await axios.get("https://www.googleapis.com/drive/v3/files?q=name contains 'init.json'", { headers: { Authorization: `Bearer ${accessToken}` } });
-        check = await check.data;
-        if (check.files.length > 0) {
-            let contents = await axios.get(`https://www.googleapis.com/drive/v2/files/${check.files[0].id}?alt=media`, { headers: { Authorization: `Bearer ${accessToken}` } })
-            contents = await contents.data
-            // console.log(contents)
-            done(null, { ...contents, id: check.files[0].id })
-        }
-        else {
-            let response = await axios.post(`https://www.googleapis.com/drive/v3/files`, { name: 'games', mimeType: 'application/vnd.google-apps.folder' }, { headers: { Authorization: `Bearer ${accessToken}` } })
-            response = await response.data
-            if (response.id) {
-
-                // create file
-                let file_resp = await axios.post(`https://www.googleapis.com/drive/v3/files`, { name: 'init.json', mimeType: 'application/json', parents: [response.id] }, { headers: { Authorization: `Bearer ${accessToken}` } })
-                file_resp = await file_resp.data
-
-                // update file
-                let file_content = await axios.put(`https://www.googleapis.com/upload/drive/v2/files/${file_resp.id}`, user, { headers: { Authorization: `Bearer ${accessToken}` } })
-                file_content = await file_content.data;
-                if (file_content.id)
-                    done(null, { ...user, id: file_content.id, token: accessToken, parentId: response.id });
-                else
-                    done(null, "file not found")
+        let db;
+        connectToDb((err) => {
+            if (!err) {
+                db = getDb()
+                db.collection("UserData").findOne({ googleID: profile.id }).then(result => {
+                    if (!result) {
+                        db.collection("UserData").insertOne(user).then(result=>{{
+                            if (result)
+                                done(null, user)
+                            else
+                                done("Invalid request");
+                        }
+                        }).catch(err => {
+                            done('database error');
+                        })
+                    }
+                    else {
+                        done(null, result);
+                    }
+                })
             }
-            else {
-                done(null, "authentication failed")
-            }
-        }
+            else
+                db = null;
+        })
     }))
 }
 export default init;
