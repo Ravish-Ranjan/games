@@ -1,7 +1,6 @@
 import express from "express";
 import auth from "../server/Routes/auth.js";
 import cors from "cors";
-import axios from 'axios'
 
 const app = express()
 app.use("/auth", auth);
